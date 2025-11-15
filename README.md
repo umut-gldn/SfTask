@@ -20,8 +20,5 @@ You also cannot create a document (a Payment) that just floats in the air; it mu
 A Lookup relationship is looser, like a sticky note that just refers to the folder, but isn't owned by it. This was not suitable for essential financial data like payments.
 
 3. Test Coverage
-After running the AccountPaymentController_Test test class, the code coverage for the AccountPaymentController Apex class is:
-
-100%
-
+After running the AccountPaymentController_Test test class, the code coverage for the AccountPaymentController Apex class is: 100%
 The test class covers all positive scenarios (fetching records, creating records) and negative scenarios (triggering the Due_Date validation rule).
