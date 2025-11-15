@@ -1,0 +1,98 @@
+<template>
+    <lightning-card title="Account Payments" icon-name="utility:account">
+        
+        <div class="slds-grid slds-wrap slds-p-around_medium">
+
+            <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-12 slds-p-right_medium">
+                <lightning-datatable
+                    key-field="Id"
+                    data={accounts}
+                    columns={accountColumns}
+                    onrowselection={handleAccountSelection}
+                    max-row-selection="1"
+                    hide-checkbox-column="true"
+                    show-row-number-column="true"
+                    error={accountError}>
+                </lightning-datatable>
+            </div>
+
+            <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12 slds-p-horizontal_medium">
+                
+                <template if:true={selectedAccountId}>
+                    <h3 class="slds-text-heading_medium slds-m-bottom_small">Payments for {selectedAccountName}</h3>
+                    
+                    <template if:true={isLoadingPayments}>
+                        <lightning-spinner alternative-text="Loading payments..." size="small"></lightning-spinner>
+                    </template>
+
+                    <lightning-datatable
+                        key-field="Id"
+                        data={payments}
+                        columns={paymentColumns}
+                        hide-checkbox-column="true"
+                        error={paymentError}>
+                    </lightning-datatable>
+                </template>
+
+                <template if:false={selectedAccountId}>
+                    <div class="slds-box slds-box_x-small slds-text-align_center">
+                        <p>Please select an Account from the left to see payments.</p>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-left_medium">
+                
+                <template if:true={selectedAccountId}>
+                    <lightning-card title="Create New Payment" icon-name="utility:account">
+                        <div class="slds-p-around_medium">
+                            <lightning-combobox
+                                name="Payment_Type__c" 
+                                label="Payment Type"
+                                value={newPayment.Payment_Type__c}
+                                options={paymentTypeOptions} onchange={handleFormChange}
+                                required>
+                            </lightning-combobox>
+
+                            <lightning-input
+                                type="number"
+                                format-step="0.01"
+                                name="Amount__c"
+                                label="Amount"
+                                value={newPayment.Amount__c}
+                                onchange={handleFormChange}
+                                required>
+                            </lightning-input>
+
+                            <lightning-input
+                                type="date"
+                                name="Due_Date__c"
+                                label="Due Date"
+                                value={newPayment.Due_Date__c}
+                                onchange={handleFormChange}
+                                required>
+                            </lightning-input>
+
+                            <lightning-textarea
+                                name="Notes__c"
+                                label="Notes"
+                                value={newPayment.Notes__c}
+                                onchange={handleFormChange}>
+                            </lightning-textarea>
+
+                            <div class="slds-m-top_medium slds-text-align_right">
+                                <lightning-button
+                                    label="Create Payment"
+                                    variant="brand"
+                                    onclick={handleCreatePayment}
+                                    disabled={isCreatingPayment}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </template>
+            </div>
+
+        </div> 
+    </lightning-card>
+</template>
